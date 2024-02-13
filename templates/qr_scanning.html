@@ -1,0 +1,26 @@
+<!-- qr_scanning.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Scanning</title>
+</head>
+<body>
+    <h1>QR Scanning Result</h1>
+    
+    {% if name is not none %}
+        <p>Name: {{ name }}</p>
+    {% endif %}
+    
+    {% if pin is not none %}
+        <p>PIN: {{ pin }}</p>
+    {% endif %}
+    
+    {% if branch is not none %}
+        <p>Branch: {{ branch }}</p>
+    {% endif %}
+    <img src='{{ url_for("static", filename="images/students/" + fetch) }} ' alt="student">
+</body>
+</html>

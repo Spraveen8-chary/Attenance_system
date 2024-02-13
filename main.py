@@ -1,6 +1,7 @@
 import qrcode
 import os 
-from flask import *
+from flask import Flask,render_template,request,url_for,redirect,Response,stream_with_context
+import scanings
 import cv2
 import pandas as pd
 import numpy as np
@@ -42,7 +43,7 @@ def register():
                 Pin     :{pin}
                 Branch  :{branch}'''
         qr = qrcode.make(data)
-        qr.save(f"C:\\Users\\Admin\\Desktop\\smart_system\\static\\images\\QR_CODES\\{name}_{pin}.png")
+        qr.save(f"static\\images\\QR_CODES\\{name}_{pin}.png")
 
         
     return render_template("qr.html")
@@ -59,7 +60,7 @@ def db():
     branch = request.form['branch'].upper()
 
     fetch = f"{name}_{pin}.png"
-    total_qrs = os.listdir("C:\\Users\\Admin\\Desktop\\smart_system\\static\\images\\students")
+    total_qrs = os.listdir("static\\images\\students")
 
     if fetch not in total_qrs:
         fetch = "no_user.png"
@@ -107,6 +108,7 @@ def generate_frames():
                 print("Name:", name)
                 print("Pin:", pin)
                 print("Branch:", branch)
+                break
 
 
             else:
@@ -122,23 +124,30 @@ def generate_frames():
             index()
 
 
-
 @app.route('/qr_Scan')
 def index():
-    # use global variables to get the extracted data
-    global name, pin, branch
-    fetch = f"{name}_{pin}.png"
-    total_qrs = os.listdir("C:\\Users\\Admin\\Desktop\\smart_system\\static\\images\\QR_CODES")
+    name, pin, branch = scanings.qr_data()
+    fetch = "no_user.png"
+    print("Before scan : ", name, pin, branch, fetch)
 
-    if fetch not in total_qrs:
-        fetch = "no_user.png"
-    # pass the data to the template
-    return render_template('streaming.html', name=name, pin=pin, branch=branch,fetch = fetch)
+    if name is not None and pin is not None and branch is not None:
+        fetch = f"{name}_{pin}.png"
+        total_qrs = os.listdir("static/images/QR_CODES")
+
+        if fetch not in total_qrs:
+            fetch = "no_user.png"
+
+        print("After scanning : ", name, pin, branch, fetch)
+
+        return render_template('streaming.html', name=name, pin=pin, branch=branch, fetch=fetch)
+    else:
+        return render_template('streaming.html', name=name, pin=pin, branch=branch, fetch=fetch)
 
 
 @app.route('/video')
 def video():
-    return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(stream_with_context(scanings.generate_frames()),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 # define the face detector model
@@ -160,7 +169,7 @@ def add_faces():
                 # cv2.rectangle(frame,(x,y),(x+w,y+h),(0,0,255),3)
                 cv2.putText(frame, f'Images Captured: {i}/50', (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 20), 2,cv2.LINE_AA)
                 if name is not None and pin is not None:
-                    user_dir = os.path.join("C:\\Users\\Admin\\Desktop\\smart_system\\static\\images\\faces\\", name + "_" + pin)
+                    user_dir = os.path.join("static\\images\\faces\\", name + "_" + pin)
                     if not os.path.exists(user_dir):
                         os.makedirs(user_dir)
                     img_path = os.path.join(user_dir, f"{name}_{i}.jpg")
@@ -187,7 +196,7 @@ def adding_face():
         branch = request.form['branch'].upper()
 
         # create the directory for the user
-        user_dir = os.path.join("C:\\Users\\Admin\\Desktop\\smart_system\\static\\images\\faces\\", name + "_" + pin)
+        user_dir = os.path.join("static\\images\\faces\\", name + "_" + pin)
         if not os.path.exists(user_dir):
             os.makedirs(user_dir)
 
@@ -212,24 +221,24 @@ def live_video():
 curent_time = date.today().strftime("%d_%m_%y")
 def excels():
 #  evening attendance 
-    if f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\evng_attendance\\Attendance-{curent_time}.csv' not in os.listdir('C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\evng_attendance'):
-        with open(f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\evng_attendance\\Attendance-{curent_time}.csv', 'w') as f:
+    if f'Attendance\\evng_attendance\\Attendance-{curent_time}.csv' not in os.listdir('Attendance\\evng_attendance'):
+        with open(f'Attendance\\evng_attendance\\Attendance-{curent_time}.csv', 'w') as f:
             f.write('Name,Pin,Branch,Final_time')
 
     # morning attendace
-    if f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\mrng_attendance\\Attendance-{curent_time}.csv' not in os.listdir('C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\mrng_attendance'):
-        with open(f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\mrng_attendance\\Attendance-{curent_time}.csv', 'w') as f:
+    if f'Attendance\\mrng_attendance\\Attendance-{curent_time}.csv' not in os.listdir('Attendance\\mrng_attendance'):
+        with open(f'Attendance\\mrng_attendance\\Attendance-{curent_time}.csv', 'w') as f:
             f.write('Name,Pin,Branch,Initial_time')
 
     # final attendance for calculations
 
-    if f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\final_attendance\\Attendance-{curent_time}.csv' not in os.listdir('C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\final_attendance'):
-        with open(f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\final_attendance\\Attendance-{curent_time}.csv', 'w') as f:
+    if f'Attendance\\final_attendance\\Attendance-{curent_time}.csv' not in os.listdir('Attendance\\final_attendance'):
+        with open(f'Attendance\\final_attendance\\Attendance-{curent_time}.csv', 'w') as f:
             f.write('Name,Pin,Branch,Initial_time,Final_time,Time_difference,Status')
 
 excels()
-file1 = pd.read_csv(f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\mrng_attendance\\Attendance-{curent_time}.csv')
-file2 = pd.read_csv(f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\evng_attendance\\Attendance-{curent_time}.csv')
+file1 = pd.read_csv(f'Attendance\\mrng_attendance\\Attendance-{curent_time}.csv')
+file2 = pd.read_csv(f'Attendance\\evng_attendance\\Attendance-{curent_time}.csv')
 
 merged_data = pd.merge(file1,file2,on=['Name','Pin','Branch'],how = 'outer')
 
@@ -245,7 +254,7 @@ merged_data.loc[merged_data['Time_difference']>6,'Status'] = 'Full-Day'
 
 merged_data.loc[merged_data['Time_difference']<3 ,'Status'] = 'ERROR'
 
-merged_data.to_csv(f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\final_attendance\\Attendance-{curent_time}.csv',index=False)
+merged_data.to_csv(f'Attendance\\final_attendance\\Attendance-{curent_time}.csv',index=False)
 
 #### Add Attendance of a specific user
 def mrng_attendance(name):
@@ -254,9 +263,9 @@ def mrng_attendance(name):
     current_time = datetime.now().strftime("%H:%M:%S")
 
 
-    df = pd.read_csv(f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\mrng_attendance\\Attendance-{curent_time}.csv')
+    df = pd.read_csv(f'Attendance\\mrng_attendance\\Attendance-{curent_time}.csv')
     if str(userid) not in list(df['Pin']):
-        with open(f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\mrng_attendance\\Attendance-{curent_time}.csv', 'a') as f:
+        with open(f'Attendance\\mrng_attendance\\Attendance-{curent_time}.csv', 'a') as f:
             f.write(f'\n{username},{userid},{branch},{current_time}')
 
 
@@ -273,9 +282,9 @@ def evng_attendance(name):
     }
     data = pd.DataFrame(att)
 
-    df = pd.read_csv(f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\evng_attendance\\Attendance-{curent_time}.csv')
+    df = pd.read_csv(f'Attendance\\evng_attendance\\Attendance-{curent_time}.csv')
     if str(userid) not in list(df['Pin']):
-        with open(f'C:\\Users\\Admin\\Desktop\\smart_system\\Attendance\\evng_attendance\\Attendance-{curent_time}.csv', 'a') as f:
+        with open(f'Attendance\\evng_attendance\\Attendance-{curent_time}.csv', 'a') as f:
             f.write(f'\n{username},{userid},{branch},{current_time}')
 
 
@@ -285,7 +294,7 @@ def extract_faces(img):
     return face_points
 #### Identify face using ML model
 def identify_face(facearray):
-    model = joblib.load('C:\\Users\\Admin\\Desktop\\smart_system\\static\\face_recognition_model.pkl')
+    model = joblib.load('static\\face_recognition_model.pkl')
     return model.predict(facearray)
 
 
@@ -293,17 +302,17 @@ def identify_face(facearray):
 def train_model():
     faces = []
     labels = []
-    userlist = os.listdir('C:\\Users\\Admin\\Desktop\\smart_system\\static\\images\\faces')
+    userlist = os.listdir('static\\images\\faces')
     for user in userlist:
-        for imgname in os.listdir(f'C:\\Users\\Admin\\Desktop\\smart_system\\static\\images\\faces\\{user}'):
-            img = cv2.imread(f'C:\\Users\\Admin\\Desktop\\smart_system\\static\\images\\faces\\{user}\\{imgname}')
+        for imgname in os.listdir(f'static\\images\\faces\\{user}'):
+            img = cv2.imread(f'static\\images\\faces\\{user}\\{imgname}')
             resized_face = cv2.resize(img, (50, 50))
             faces.append(resized_face.ravel())
             labels.append(user)
     faces = np.array(faces)
     knn = KNeighborsClassifier(n_neighbors=5)
     knn.fit(faces, labels)
-    joblib.dump(knn, 'C:\\Users\\Admin\\Desktop\\smart_system\\static\\face_recognition_model.pkl')
+    joblib.dump(knn, 'static\\face_recognition_model.pkl')
 
 def face_Recog():
     global name, pin
@@ -311,16 +320,16 @@ def face_Recog():
     face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
     # load the face recognition model
-    model = joblib.load('C:\\Users\\Admin\\Desktop\\smart_system\\static\\face_recognition_model.pkl')
+    model = joblib.load('static\\face_recognition_model.pkl')
 
     # initialize lists to store faces and names
     faces = []
     names = []
 
     # loop through the faces and names in the faces folder
-    for user in os.listdir('C:\\Users\\Admin\\Desktop\\smart_system\\static\\images\\faces'):
-        for imgname in os.listdir(f'C:\\Users\\Admin\\Desktop\\smart_system\\static\\images\\faces\\{user}'):
-            img = cv2.imread(f'C:\\Users\\Admin\\Desktop\\smart_system\\static\\images\\faces\\{user}\\{imgname}')
+    for user in os.listdir('static\\images\\faces'):
+        for imgname in os.listdir(f'static\\images\\faces\\{user}'):
+            img = cv2.imread(f'static\\images\\faces\\{user}\\{imgname}')
             resized_face = cv2.resize(img, (50, 50))
             faces.append(resized_face)
             names.append(user)
@@ -340,8 +349,9 @@ def face_Recog():
 
             # loop through the faces and draw a rectangle around each face
             for (x, y, w, h) in faces_rects:
-                if extract_faces(frame) != ():
-                    (x, y, w, h) = extract_faces(frame)[0]
+                detected_faces = extract_faces(frame)
+                if detected_faces and len(detected_faces) > 0:
+                    (x, y, w, h) = detected_faces[0]
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 20), 2)
                     face = cv2.resize(frame[y:y + h, x:x + w], (50, 50))
                     identified_person = identify_face(face.reshape(1, -1))[0]

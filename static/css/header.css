@@ -1,0 +1,108 @@
+.loader{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f7f9fb;
+    transition: opacity 0.75s,visibility 0.75s;
+}
+
+.loader-hidden{
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader::after{
+    content: "";
+    width: 75px;
+    height: 75px;
+    border: 15px solid #dddddd;
+    border-top-color: #7449f5;
+    border-radius: 50%;
+    animation: loading 0.75s ease infinite;
+}
+
+@keyframes loading {
+    from{
+        transform: rotate(0turn);
+    }
+    to{
+        transform: rotate(1turn);
+    }  
+}
+
+/* navbar css*/
+.navbar{
+    /* margin-left: 5vw; */
+    height: 7vw;
+    width: 100vw;
+    margin-top: 0.5vh;
+    background-color: #0f1010;
+    border-radius: 8px;
+}
+.navbar-nav>li {
+    position: relative;
+    font-weight: 700;
+    font-size: 2rem;
+    padding-left: 120px;
+}
+
+.navbar-light .navbar-nav .active a::after {
+    border-bottom: 5px solid #0f1eed;
+    bottom: -10px;
+    content: " ";
+    left: 0;
+    position: absolute;
+    right: 0;
+    width: 8vw;
+    margin-left: 110px;
+ }
+
+.container_heading_buttons {
+    margin-left: 50px;
+    float: inline-start;
+}
+
+.itemLogout {
+    background-color: #5bc0eb;
+    border-radius: 10px;
+    margin-left: 60vw;
+}
+
+
+/*college and course details css*/
+.college_details {
+    margin-left: 18vw;
+    text-align: center;
+    height: 6.5vh;
+    width: 64vw;
+    /*border: 1px solid black;*/
+    border-radius: 8px;
+    background-color: #5bc0eb;
+    position: relative;
+    top: 100px;
+    margin-top: -170px;
+}
+
+.attendance_heading {
+    color: blue;
+    position: absolute;
+    top: 34vh;
+    left: 40vw;
+}
+
+.date_heading {
+    position: absolute;
+    top: 25vh;
+    left: 78vw;
+}
+
+.department_heading {
+    position: absolute;
+    top: 25vh;
+    left: 5vw;
+}

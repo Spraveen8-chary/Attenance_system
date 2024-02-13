@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+<title>SCANING QR</title>
+<style>
+
+    body
+{
+    background-image: url("{{url_for('static' , filename= 'images/back2.jpg')}}");
+     background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
+}
+h1
+{
+    text-align: center;
+    color: black;
+    font-family: "Open Sans", sans-serif;
+    font-size: 4rem;
+
+}
+
+/* body {
+  background-color: #eaeff1;
+  font-family: "Raleway", sans-serif;
+} */
+
+/* @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500;600&display=swap"); */
+
+/* img {
+  width: 100%;
+} */
+
+img {
+
+  border-radius: 12px;
+  height: 214px;
+  object-fit: cover;
+  width: 100%;
+}
+
+
+
+
+#container {
+  max-width: 300px;
+
+  /* Center the container in middle on horizontal axis */
+  margin: 0 auto;
+
+  /* Add empty space above the container (20% of the view height) */
+  margin-top: 20vh;
+}
+
+.card {
+  /* Change background color */
+  background-color: white;
+
+  /* Add border */
+  border: 1px solid #bacdd8;
+
+  /* Add space between the border and the content */
+  padding: 8px;
+
+  border-radius: 12px;
+}
+
+.tag {
+  padding: 4px 8px;
+  border: 1px solid #e5eaed;
+  font-family: "Open Sans", sans-serif;
+
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #788697;
+}
+
+/* Style div elements that have class equal to name */
+.name {
+  font-size: 24px;
+  font-weight: 600;
+  font-family: "Open Sans", sans-serif;
+  margin-top: 16px;
+}
+
+/* Style p element */
+p {
+  font-size: 14px;
+  color: #7f8c9b;
+  line-height: 150%;
+  font-family: "Open Sans", sans-serif;
+
+}
+
+/* Style button element */
+button {
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+
+  font-weight: 600;
+  color: #0077ff;
+  background-color: #e0efff;
+  font-family: "Open Sans", sans-serif;
+
+  /* Button is inline-block element by default, it need to have block display for margin: 0 auto; to work */
+  margin: 0 auto;
+  display: block;
+
+  /* Button is a clickable element, therefore it should have a pointer cursor */
+  cursor: pointer;
+}
+
+.card__details {
+  /* Add space around the details */
+  padding: 16px 8px 8px 8px;
+}
+
+button:focus,
+button:hover {
+  background-color: #0077ff;
+  color: #e0efff;
+}
+
+/* margin: topValue rightValue bottomValue leftValue;
+margin: verticalValue horizontalValue; */
+</style>
+    <body>
+        <h1>Live streaming</h1>
+        <div>
+
+            <img src="{{ url_for('video' ) }}" style="margin-left: 142px;border: 8px solid black;margin-top: 60px;border-radius: 10%;width: 35%;height: 30%;"/>
+        </div>
+
+<!-- Your existing HTML content -->
+
+    <!-- A div with container id to hold the card -->
+    <div id="container" style="margin-left: 764px;margin-top: -440px;">
+
+        <!-- A div with card class for the card  -->
+        <div class="card" >
+        <img src='{{ url_for("static", filename="images/students/" + fetch) }} ' alt="student">
+
+        <!-- A div with card__details class to hold the details in the card  -->
+        <form action="/face_attendance" method="GET">
+          <div class="card__details">
+            <span class="tag">Details</span>
+            <div class="name">{{ name }}</div>
+            <div class="name">{{ pin }}</div>
+            <div class="name">{{ branch }}</div>
+            <button type="submit"><b>Face Validation</b></button>
+        </div>  
+      </form>
+      
+
+
+        </div>
+    </div>
+
+    </body>
+
+
+
+</html>

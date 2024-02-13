@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .body {
+            padding: 0%;
+            margin: 0%;
+        }
+
+        .form-floating {
+            padding: 1vh;
+        }
+
+        .form-signup {
+            padding: 20vh 35vw;
+        }
+
+        .link-signin {
+            padding: 2vh;
+        }
+        #invalid_notification{
+            color: red;
+            padding-left: 18vw;
+            font-size: 15px;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+
+<body class="body">
+    <main class="form-signup w-100 m-auto">
+        <form action="/signin" method="POST">
+            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+            <div class="form-floating">
+                <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+            </div>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingConfirmPassword" placeholder="Password">
+                <label for="floatingConfirmPassword">confirm Password</label>
+            </div>
+            <h1 id="invalid_notification">{% if invalid %}create a strong password{% endif %}</h1>
+            <div class="link-signin">
+                <h6>Already have an account? <a href="/signup"> sign up </a></h6>
+            </div>
+
+            <button class="btn btn-primary w-100 py-2" id="submit">Sign in</button>
+
+        </form>
+
+    </main>
+    <script>
+        document.querySelector("#submit").addEventListener("click", function () {
+            document.forms.form.submit;
+        })
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>

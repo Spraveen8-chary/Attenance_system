@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+    <title>USER DATA</title>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+    <link rel="stylesheet" type="text/css" href="slide navbar style.css">
+
+	  <style>
+:root {
+  --clr-primary: #651fff;
+  --clr-gray: #37474f;
+  --clr-gray-light: #b0bec5;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 2.5rem;
+  color: var(--clr-gray);
+  background-image: url("{{url_for('static' , filename= 'images/back2.jpg')}}");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+}
+
+/* //Wrapper for grid */
+.wrapper-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr);
+  grid-gap: 2.5rem;
+  justify-content: center;
+}
+
+/* //profile card container */
+.container {
+  overflow: hidden;
+  box-shadow: 0px 2px 8px 0px var(--clr-gray-light);
+  background-color: white;
+  text-align: center;
+  border-radius: 1rem;
+  position: relative;
+}
+
+/* //background image in card */
+.banner-img {
+  position: absolute;
+  background-image: url("{{url_for('static' , filename= 'images/card_back.jpg')}}");
+  height: 10rem;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* //circle profile image on top */
+.profile-img {
+  width: 8rem;
+  clip-path: circle(60px at center);
+  margin-top: 4.5rem;
+}
+
+/* //name */
+.name {
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+/* //paragraph description */
+.description {
+  margin: 1rem 2rem;
+  font-size: 1rem;
+}
+
+/* //primary button at bottom */
+.btn {
+  width: 100%;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  color: rgb(254, 249, 249);
+  padding: 1rem;
+  background-color: var(--clr-primary);
+}
+
+/* //Responsive Tablet */
+@media screen and (min-width: 500px) {
+  .wrapper-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* //Responsive Desktop */
+@media screen and (min-width: 760px) {
+  .wrapper-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+.flip-card {
+  background-color: transparent;
+  width: 190px;
+  height: 254px;
+  perspective: 1000px;
+  font-family: sans-serif;
+}
+
+.title {
+  font-size: 1.5em;
+  font-weight: 900;
+  text-align: center;
+  margin: 0;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  box-shadow: 0 8px 14px 0 rgba(0,0,0,0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border: 1px solid coral;
+  border-radius: 1rem;
+}
+
+.flip-card-front {
+  background: linear-gradient(120deg, bisque 60%, rgb(255, 231, 222) 88%,
+     rgb(255, 211, 195) 40%, rgba(255, 127, 80, 0.603) 48%);
+  color: coral;
+}
+
+.flip-card-back {
+  background: linear-gradient(120deg, rgb(255, 174, 145) 30%, coral 88%,
+     bisque 40%, rgb(255, 185, 160) 78%);
+  color: white;
+  transform: rotateY(180deg);
+}
+
+/*  */
+
+
+header {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: #21293a;
+  color: #fff;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.5);
+}
+
+header .logo {
+  font-size: 30px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 2px;
+  color: #fff;
+}
+
+header .navbar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header .navbar a {
+  font-size: 1em;
+  font-weight: 500;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  padding: 1rem 1.5rem;
+  border-radius: 05px;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+header .navbar a:hover,
+.active {
+  background: #2c3e50;
+  transition: 0.6s;
+}
+
+header .btn {
+  font-size: 25px;
+  cursor: pointer;
+  display: none;
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+section h2 {
+  color: #fff;
+  font-size: 10rem;
+  letter-spacing: 0.9rem;
+  text-align: center;
+}
+
+@media (max-width: 991px) {
+  html {
+    font-size: 55%;
+  }
+  header {
+    padding: 1rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  header .btn {
+    display: block;
+  }
+
+  header .navbar {
+    position: fixed;
+    flex-direction: column;
+    min-width: 300px;
+    height: 100vh;
+    background: #2c3e50;
+    top: 0;
+    right: -100%;
+    transition: all 0.9s;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 10rem;
+  }
+
+  header .navbar.active2 {
+    right: 0;
+    transition: 0.9s;
+  }
+
+  header .navbar .close-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 25px;
+  }
+
+  header .navbar a {
+    display: block;
+    font-size: 1.9rem;
+    margin: 15px;
+    padding: 0.5rem 15px;
+  }
+
+  header .navbar a:hover {
+    background: #21293a;
+    color: #fff;
+  }
+
+  header .logo {
+    font-size: 25px;
+    font-weight: 500;
+  }
+
+}
+
+	  </style>
+
+    
+	  </head>
+	  <body>
+
+    <header style="margin-top: -610px;">
+      <a href="/" class="logo"><img src="{{url_for('static' , filename= 'images/logo.png')}}" alt="" style="padding-left: 38px;"></a>
+        <nav class="navbar">
+              <a href="/home" class="active">Home</a>
+              <a href="/qrcode">QR GENERATION</a>
+              <a href="/signup">RECORDS</a>
+              <a href="/face_validation">ADD FACE</a>
+              <a href="/validate">ATTENDANCE</a>
+              <a href="/">ABOUT</a>
+        </nav>
+      <div class="btn">
+        <i class="fas fa-bars menu-btn"></i>
+      </div>
+	  </header>
+
+		<form action="http://localhost:5000/database" method="post"></form>
+		<div class="wrapper-grid" >
+		  <div class="container"   style="margin-left: 220px;width: 90%;margin-top: 125px;">
+			<div class='banner-img'></div>
+			<img src='{{ url_for("static", filename="images/students/" + fetch) }}' alt='profile image' class="profile-img">
+			<!-- <img src='{{ url_for("static", filename="images/students/" + name + "_" + pin + ".png") }}' alt='profile image' class="profile-img"> -->
+			<h1 class="name">{{name}}</h1>
+			<p class="description"><b>PIN - </b> {{pin}} <br><b>Branch - </b>{{branch}}</p>
+			<button class='btn'>SGM.Govt.Polythechnic.College</button>
+		  </div>
+	    </div>
+</form>
+<div class="flip-card" style="margin-left: 762px; margin-top: -335px;">
+  <div class="flip-card-inner">
+      <div class="flip-card-front">
+          <p class="title">QR CODE</p>
+          <!-- <p>Qr Code</p> -->
+      </div>
+      <div class="flip-card-back">
+          
+          <img src='{{ url_for("static", filename="images/QR_CODES/" + name + "_" + pin + ".png") }}' alt="">
+      </div>
+  </div>
+</div>
+	  </body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{url_for('static',filename='css/header.css')}}">
+    <style>
+        body{
+        /* background-color: rgb(62, 4, 92); */
+        background-image: url('{{url_for("static", filename="images/clg.jpeg")}}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        }
+        #attandance_table {
+          margin-left: 5vw;
+          width: 90vw;
+          border: 2px solid black;
+          position: absolute;
+          top: 48vh;
+          text-align: center;
+      }
+      .attandance_container {
+                text-align: center;
+                margin-top:250px;
+            }
+    
+            /* Add some margin to the top */
+            .container {
+                margin-top: 20px;
+            }
+    
+            /* Center-align column names */
+            .table th {
+                text-align: center;
+            }
+            .table {
+            border-radius: 10px;
+            overflow: hidden;   
+        }
+            
+      </style>
+</head>
+
+<body>
+    <!-- active/present watching tab -->
+    <div class="active_tab">
+        <nav class="navbar fixed-top navbar-light navbar-expand-md">
+          <div class="container_heading_buttons">
+            <div class="collapse navbar-collapse justify-content-end" id="main-nav-collapse">
+              <ul class="navbar-nav">
+                <li class="nav-item"><a style="color: white;" class="nav-link" href="/morning"> Back </a></li>
+                <li class="nav-item "><a style="color: white;" class="nav-link" href="/morning"> Morning </a></li>
+                <li class="nav-item {{active}}"><a style="color: white;" class="nav-link" href="/evening"> Evening </a></li>
+                <li class="nav-item"><a style="color: white;" class="nav-link" href="/total"> Total </a></li>
+                <li class="nav-item"><a style="color: white;" class="nav-link" href="/statistics"> Statistics </a></li>
+                <li class="nav-item itemLogout"><a style="color: white;" class="nav-link" href="/signup">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+  <!-- details like college course etc -->
+  <img src="{{url_for('static', filename='images/LOGO.jpg')}}" style="height: 8wv; width: 8vw; margin-top: 130px; border-radius: 10px; margin-left: 70px;"  alt="">
+  <div class="college_details">
+    <h2 class="collegeName">Sanjay Gandhi Memorial Government Polytechnic Abdullapurmet</h2>
+  </div>
+  <div class="courseDetails" >
+    <h1 style="margin-top: 10px; font-weight: 700; font-size: 4em; margin-left: 30px;" class="attendance_heading"> Attendance</h1>
+    <h5 style="color: rgb(16, 16, 16); margin-top: 100px; font-weight: 1000; margin-left: -100px;" class="date_heading">Date : {{date}}</h5>
+    <h5 style="color: rgb(12, 12, 12); margin-top: 100px; font-weight: 700; font-size: 1.5rem;" class="department_heading">Department : {{department}}</h5>
+  </div>
+
+
+
+  <!-- attandance table starts from here  -->
+  <div  class="attandance_container">
+    <div class="container mt-3">
+      {{ data | safe }}
+  </div>
+  </div>
+
+
+    <!-- loader -->
+    <div class="loader"></div>
+
+
+    <script src="{{url_for('static',filename='js/common.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
